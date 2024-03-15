@@ -398,6 +398,12 @@ section {
     margin-top: 4rem;
   }
 
+  @media (max-width: 768px) {
+    .services .section-title h2 {
+      font-size: 26px; /* Adjust the font size for smaller screens */
+    }
+  }
+
 
  
   /* Add this rule to style the box-link class */
