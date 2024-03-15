@@ -402,6 +402,9 @@ section {
     .services .section-title h2 {
       font-size: 24px; /* Adjust the font size for smaller screens */
     }
+    .h-size {
+      font-size: 22px;
+    }
   }
 
 
