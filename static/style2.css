@@ -398,7 +398,7 @@ section {
     margin-top: 4rem;
   }
 
-  @media (max-width: 500px) {
+  @media (max-width: 600px) {
     .services .section-title h2 {
       font-size: 23px; /* Adjust the font size for smaller screens */
     }
