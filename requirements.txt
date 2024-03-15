@@ -1,1 +1,6 @@
-flask==2.2.2
+Flask==3.0.2
+<<<<<<< HEAD
+Flask_Mail==0.9.1
+=======
+Flask_Mail==0.9.1
+>>>>>>> a4add0f68e5bc81acfc6ca8d33b7f9b117eef866
