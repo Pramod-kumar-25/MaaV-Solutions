@@ -400,7 +400,7 @@ section {
 
   @media (max-width: 768px) {
     .services .section-title h2 {
-      font-size: 26px; /* Adjust the font size for smaller screens */
+      font-size: 24px; /* Adjust the font size for smaller screens */
     }
   }
 
