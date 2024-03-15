@@ -59,5 +59,6 @@ def gst_page():
 def tds_page():
     return render_template('TDS.html')
 
-
+if __name__ == '__main__':
+    app.run(debug=True)
 
