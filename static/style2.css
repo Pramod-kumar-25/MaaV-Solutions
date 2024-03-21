@@ -505,7 +505,7 @@ section {
   margin-bottom: 120px; /* Adjust according to your footer height */
 }
 
-@media (max-width: 667px) {
+@media (max-width: 657px) {
   #footer1 .container {
     display: flex;
     flex-direction: column;
