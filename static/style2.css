@@ -504,3 +504,18 @@ section {
 .section {
   margin-bottom: 120px; /* Adjust according to your footer height */
 }
+
+@media (max-width: 667px) {
+  #footer1 .container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  #footer1 .copyright1 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
+}
