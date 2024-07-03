@@ -47,18 +47,14 @@ def index():
     
 
 
-@app.route('/ITR.html')
-def itr_page():
-    return render_template('ITR.html')
-
 @app.route('/GST.html')
 def gst_page():
     return render_template('GST.html')
 
+@app.route('/ITR.html')
+def itr_page():
+    return render_template('ITR.html')
+
 @app.route('/TDS.html')
 def tds_page():
     return render_template('TDS.html')
-
-if __name__ == '__main__':
-    app.run(debug=True)
-
