@@ -253,6 +253,7 @@
 
 
 
+<<<<<<< HEAD
  document.addEventListener("DOMContentLoaded", function () {
   const contactForm = document.getElementById("contactForm");
 
@@ -297,6 +298,47 @@
   });
 });
 
+=======
+  document.addEventListener("DOMContentLoaded", function () {
+    const contactForm = document.getElementById("contactForm");
+  
+    contactForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+  
+        // Get form data
+        const formData = new FormData(contactForm);
+  
+        // Make a POST request to the server
+        fetch(contactForm.action, {
+            method: "POST",
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Handle the server response
+            if (data.success) {
+                // Show a success message as an alert
+                Swal.fire({
+                  title: "Success!",
+                  text: "Message sent successfully!",
+                  icon: "success"
+                });
+            } else {
+                // Show an error message using the popup
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "Something went wrong!",
+                });
+            }
+        })
+        .catch(error => {
+            // Show an error message using the popup
+            showPopup("error", "An unexpected error occurred.");
+        });
+    });
+  });
+>>>>>>> 86b260f6abc041dbb2a062364de855e345938ce2
 
   
   

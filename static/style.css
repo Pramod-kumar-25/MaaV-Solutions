@@ -2,6 +2,7 @@
 body {
   font-family: "Open Sans", sans-serif;
   color: #444444;
+<<<<<<< HEAD
   
 }
 
@@ -9,6 +10,10 @@ body {
 main {
   min-height: calc(100vh - 250px); /* Adjust 250px if your header + footer are taller/shorter */
 }
+=======
+}
+
+>>>>>>> 86b260f6abc041dbb2a062364de855e345938ce2
 a {
   color: #3498db;
   text-decoration: none;
@@ -74,8 +79,11 @@ h6 {
 # Header
 --------------------------------------------------------------*/
 #header {
+<<<<<<< HEAD
 
  
+=======
+>>>>>>> 86b260f6abc041dbb2a062364de855e345938ce2
   z-index: 997;
   transition: all 0.5s;
   padding: 22px 0;
@@ -924,6 +932,7 @@ section {
 
 #footer1 .footer-links a:hover {
   color: #3498db;
+<<<<<<< HEAD
 }
 
 .card {
@@ -940,3 +949,6 @@ section {
   border-radius: 6px;
 }
 
+=======
+}
+>>>>>>> 86b260f6abc041dbb2a062364de855e345938ce2
