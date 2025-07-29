@@ -1,0 +1,522 @@
+body {
+    font-family: "Open Sans", sans-serif;
+    color: #444444;
+    min-height: 100vh; 
+    display: flex; 
+    
+    flex-direction: column;
+  }
+  
+  a {
+    color: #3498db;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    color: #5faee3;
+    text-decoration: none;
+  }
+  
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "Open Sans", sans-serif;
+  }
+
+
+
+  /*--------------------------------------------------------------
+# Back to top button
+--------------------------------------------------------------*/
+.back-to-top {
+    position: fixed;
+    visibility: hidden;
+    opacity: 0;
+    right: 15px;
+    bottom: 15px;
+    z-index: 996;
+    background: #3498db;
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    transition: all 0.4s;
+  }
+  
+  .back-to-top i {
+    font-size: 28px;
+    color: #fff;
+    line-height: 0;
+  }
+  
+  .back-to-top:hover {
+    background: #57aae1;
+    color: #fff;
+  }
+  
+  .back-to-top.active {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  /*--------------------------------------------------------------
+  # Disable AOS delay on mobile
+  --------------------------------------------------------------*/
+  @media screen and (max-width: 768px) {
+    [data-aos-delay] {
+      transition-delay: 0 !important;
+    }
+  }
+  
+  /*--------------------------------------------------------------
+  # Header
+  --------------------------------------------------------------*/
+  #header {
+    z-index: 997;
+    transition: all 0.5s;
+    padding: 22px 0;
+    background: #b4cde9;
+  }
+  
+  #header.header-scrolled {
+    box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
+    padding: 12px 0;
+  }
+  
+  #header .logo h1 {
+    font-size: 30px;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  
+  #header .logo h1 a,
+  #header .logo h1 a:hover {
+    color: #222222;
+    text-decoration: none;
+  }
+  
+  
+  /*--------------------------------------------------------------
+  # Navigation Menu
+  --------------------------------------------------------------*/
+  /**
+  * Desktop Navigation 
+  */
+  .navbar {
+    padding: 0;
+  }
+  
+  .navbar ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    list-style: none;
+    align-items: center;
+  }
+  
+  .navbar li {
+    position: relative;
+  }
+  
+  .navbar a,
+  .navbar a:focus {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0 10px 30px;
+    font-size: 15px;
+    font-weight: 400;
+    color: #555555;
+    white-space: nowrap;
+    transition: 0.3s;
+  }
+  
+  .navbar a:hover,
+  .navbar .active,
+  .navbar .active:focus,
+  .navbar li:hover>a {
+    color: #3498db;
+  }
+  
+  
+  
+  
+  /**
+  * Mobile Navigation 
+  */
+  .mobile-nav-toggle {
+    color: #222222;
+    font-size: 28px;
+    cursor: pointer;
+    display: none;
+    line-height: 0;
+    transition: 0.5s;
+  }
+  
+  .mobile-nav-toggle.bi-x {
+    color: #fff;
+  }
+  
+  @media (max-width: 991px) {
+    .mobile-nav-toggle {
+      display: block;
+    }
+  
+    .navbar ul {
+      display: none;
+    }
+  }
+  
+  .navbar-mobile {
+    position: fixed;
+    overflow: hidden;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: rgba(9, 9, 9, 0.9);
+    transition: 0.3s;
+    z-index: 999;
+  }
+  
+  .navbar-mobile .mobile-nav-toggle {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+  }
+  
+  .navbar-mobile ul {
+    display: block;
+    position: absolute;
+    top: 55px;
+    right: 15px;
+    bottom: 15px;
+    left: 15px;
+    padding: 10px 0;
+    border-radius: 8px;
+    background-color: #fff;
+    overflow-y: auto;
+    transition: 0.3s;
+  }
+  
+  .navbar-mobile a,
+  .navbar-mobile a:focus {
+    padding: 10px 20px;
+    font-size: 15px;
+    color: #222222;
+  }
+  
+  .navbar-mobile a:hover,
+  .navbar-mobile .active,
+  .navbar-mobile li:hover>a {
+    color: #3498db;
+  }
+  
+  .navbar-mobile .getstarted,
+  .navbar-mobile .getstarted:focus {
+    margin: 15px;
+  }
+  
+  .navbar-mobile .dropdown ul {
+    position: static;
+    display: none;
+    margin: 10px 20px;
+    padding: 10px 0;
+    z-index: 99;
+    opacity: 1;
+    visibility: visible;
+    background: #fff;
+    box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
+  }
+  
+  .navbar-mobile .dropdown ul li {
+    min-width: 200px;
+  }
+  
+  .navbar-mobile .dropdown ul a {
+    padding: 10px 20px;
+  }
+  
+  .navbar-mobile .dropdown ul a i {
+    font-size: 12px;
+  }
+  
+  .navbar-mobile .dropdown ul a:hover,
+  .navbar-mobile .dropdown ul .active:hover,
+  .navbar-mobile .dropdown ul li:hover>a {
+    color: #3498db;
+  }
+  
+  .navbar-mobile .dropdown>.dropdown-active {
+    display: block;
+  }
+
+  
+
+
+  /*--------------------------------------------------------------
+# Sections General
+--------------------------------------------------------------*/
+section {
+    padding: 60px 0;
+    overflow: hidden;
+  }
+  
+  .section-title {
+    text-align: center;
+    margin-top: 50px;
+    padding-bottom: 30px;
+  }
+  
+  .section-title h2 {
+    font-size: 32px;
+    font-weight: bold;
+    text-transform: uppercase;
+    position: relative;
+    color: #222222;
+  }
+  
+  .section-title h2::before,
+  .section-title h2::after {
+    content: "";
+    width: 50px;
+    height: 2px;
+    background: #3498db;
+    display: inline-block;
+  }
+  
+  .section-title h2::before {
+    margin: 0 15px 10px 0;
+  }
+  
+  .section-title h2::after {
+    margin: 0 0 10px 15px;
+  }
+  
+  .section-title p {
+    margin: 15px 0 0 0;
+  }
+
+
+
+/*--------------------------------------------------------------
+# Services
+--------------------------------------------------------------*/
+.services .icon-box {
+    padding: 80px;
+    position: relative;
+    overflow: hidden;
+    background: #fdfdfd;
+    box-shadow: 0 0 29px 0 rgba(68, 88, 144, 0.12);
+    transition: all 0.3s ease-in-out;
+    border-radius: 8px;
+    z-index: 1;
+  }
+  
+  .services .icon-box::before {
+    content: "";
+    position: absolute;
+    background: #3498db;
+    right: -40px;
+    top: -40px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50px;
+    transition: all 0.3s;
+    z-index: -1;
+  }
+  
+  .services .icon-box:hover::before {
+    background: #3498db;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0px;
+  }
+  
+  .services .icon {
+    margin: 0 auto 20px auto;
+    padding-top: 10px;
+    display: inline-block;
+    text-align: center;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    background: #3498db;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .services .icon i {
+    font-size: 36px;
+    line-height: 1;
+    color: #fff;
+  }
+  
+  .services .title {
+    font-weight: 700;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-size: 18px;
+  }
+  
+  
+  .services .title a {
+    color: #111;
+  }
+  
+
+  .services .description {
+    font-size: 15px;
+    line-height: 28px;
+    margin-bottom: 0;
+  }
+  
+  .services .icon-box:hover .title a,
+  .services .icon-box:hover .description {
+    color: #fff;
+  }
+  
+  .services .icon-box:hover .icon {
+    background: #fff;
+  }
+  
+  .services .icon-box:hover .icon i {
+    color: #3498db;
+  }
+  
+  .row.mb-5 {
+    margin-bottom: 5rem !important;
+  }
+
+  .mt-4 {
+    margin-top: 4rem;
+  }
+
+  @media (max-width: 600px) {
+    .services .section-title h2 {
+      font-size: 23px; 
+    }
+    .services .section-title .h2-size {
+      font-size: 21px;
+    }
+    .services .section-title .h-size {
+      font-size: 17px;
+    }
+  }
+
+
+ 
+  /* Add this rule to style the box-link class */
+  .box-link {
+    display: block;
+    text-decoration: none;
+    color: inherit; /* Inherit the text color from the parent element */
+    transition: color 0.3s ease-in-out; /* Smooth transition for color changes */
+  }
+  
+  /* Add your existing styles for the icon-box hover effect */
+  .box-link:hover .icon-box::before {
+    background: #3498db;
+    right: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0px;
+  }
+  
+  .box-link:hover .title a,
+  .box-link:hover .description {
+    color: #fff;
+  }
+  
+  .box-link:hover .icon {
+    background: #fff;
+  }
+  
+  .box-link:hover .icon i {
+    color: #3498db;
+  }
+
+
+/*--------------------------------------------------------------
+# Footer for internal sections
+--------------------------------------------------------------*/
+
+#footer1 {
+    background: #b4cde9;
+    box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    color: #222222;
+    font-size: 14px;
+    width: 100%;
+    margin-top: auto; 
+    bottom: 0; 
+    position: fixed;
+
+  
+  }
+  
+  #footer1 .credits1 {
+    font-size: 13px;
+    padding-top: 5px;
+    color: #222222;
+  }
+  
+  #footer1 .footer-links a {
+    color: #222222;
+    padding-left: 15px;
+  }
+  
+  #footer1 .footer-links a:first-child {
+    padding-left: 0;
+  }
+  
+  #footer1 .footer-links a:hover {
+    color: #3498db;
+  }
+
+
+
+  /* Add a class to the main container */
+.main-container {
+  position: relative; 
+  z-index: 1; 
+  overflow: auto; 
+  padding-bottom: 100px; 
+}
+
+/* Set a higher z-index for the footer to ensure it stays on top */
+#footer1 {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999; 
+}
+
+/* Ensure the containers don't overlap with the footer */
+.section {
+  margin-bottom: 120px; /* Adjust according to your footer height */
+}
+
+@media (max-width: 657px) {
+  #footer1 .container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  #footer1 .copyright1 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
+}
+

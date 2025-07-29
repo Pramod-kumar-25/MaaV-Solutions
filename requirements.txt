@@ -1,0 +1,6 @@
+Flask==3.0.2
+Flask_Mail==0.9.1
+firebase-admin
+pyrebase4
+
+

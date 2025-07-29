@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Checkout - MAAV Solutions</title>
+  <link href="/static/img/favicon.ico" rel="icon">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Raleway|Poppins" rel="stylesheet">
+  <link href="/static/vendor/aos/aos.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="/static/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="/static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="/static/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="/static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+  <style>
+    @media (max-width: 576px) {
+      .btn-sm {
+        padding: 0.35rem 0.5rem;
+        font-size: 0.75rem;
+      }
+
+      .dropdown-menu {
+        font-size: 0.8rem;
+      }
+
+      .logo h1 {
+        font-size: 1rem;
+      }
+
+      .Maav {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="fixed-top d-flex align-items-center">
+    <div class="container-fluid d-flex flex-wrap align-items-center justify-content-between">
+      <div class="logo">
+        <h1 class="Maav"><a href="/">MAAV SOLUTIONS</a></h1>
+      </div>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto" href="/">Home</a></li>
+          <li><a class="nav-link scrollto" href="/#services">Services</a></li>
+          <li><a class="nav-link scrollto" href="/#about">About us</a></li>
+          <li><a class="nav-link scrollto" href="/#mission">Our Mission</a></li>
+          <li><a class="nav-link scrollto" href="/#vision">Our Vision</a></li>
+          <li><a class="nav-link scrollto" href="/#contact">Contact us</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav>
+
+      <div class="d-flex align-items-center flex-wrap gap-1 mt-2 mt-sm-0">
+        {% if user %}
+          <a href="{{ url_for('dashboard') }}" class="btn btn-outline-success btn-sm">Dashboard</a>
+          <a href="{{ url_for('cart') }}" class="btn btn-outline-primary btn-sm">My Cart</a>
+          <div class="dropdown">
+            <button class="btn btn-outline-dark btn-sm rounded-circle dropdown-toggle" type="button" data-bs-toggle="dropdown">
+              <i class="bi bi-person-circle"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li class="dropdown-header">Hello {{ name }}</li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger" href="/logout">Logout</a></li>
+            </ul>
+          </div>
+        {% else %}
+          <a href="{{ url_for('login_page') }}" class="btn btn-outline-primary btn-sm me-1">Login</a>
+          <a href="{{ url_for('signup_page') }}" class="btn btn-primary btn-sm">Signup</a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <!-- ======= Main Section ======= -->
+  <main class="flex-grow-1 pt-5 mt-5">
+    <div class="container-fluid px-2 px-sm-4 py-5">
+      <div class="container">
+        <h2 class="mb-4">Checkout</h2>
+
+        {% if cart_data %}
+        <div class="table-responsive mb-4">
+          <table class="table table-bordered align-middle text-center">
+            <thead class="table-light">
+              <tr>
+                <th>#</th>
+                <th>Service</th>
+                <th>Plan</th>
+                <th>Price</th>
+                <th>Qty</th>
+                <th>Subtotal</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for key, item in cart_data.items() %}
+              <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ item.service }}</td>
+                <td>{{ item.plan }}</td>
+                <td>₹{{ item.price }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>₹{{ item.price * item.quantity }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        <small class="text-muted d-block d-sm-none text-center mb-2">← Scroll table →</small>
+
+        <div class="text-end">
+          <h4 class="mb-2">Total: ₹{{ total }}</h4>
+          <p class="text-success"><strong>Combo Offer:</strong> Bookkeeping + ITR + GST for Startups = ₹2999/-</p>
+
+          <!-- Razorpay Payment Form -->
+          <form onsubmit="return startPayment(event)">
+            <input type="hidden" name="amount" value="{{ total }}">
+            <button type="submit" class="btn btn-success btn-lg">Pay Now</button>
+          </form>
+        </div>
+        {% else %}
+        <div class="alert alert-info text-center">Your cart is empty. Please add services.</div>
+        {% endif %}
+      </div>
+    </div>
+  </main>
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="bg-blue py-3 mt-auto">
+    <div class="container">
+      <div class="row d-flex align-items-center">
+        <div class="col-lg-6 text-lg-left text-center">
+          <div class="copyright">
+            &copy; Copyright <strong>MAAV SOLUTIONS</strong>. All Rights Reserved
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <nav class="footer-links text-lg-right text-center pt-2 pt-lg-0">
+            <a href="/">Home</a>
+            <a href="/#about">About us</a>
+            <a href="/#services">Our Services</a>
+            <a href="#">Privacy Policy</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Razorpay Script -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <script>
+    function startPayment(e) {
+      e.preventDefault();
+
+      fetch('/create_order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({ amount: {{ total }} })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) {
+          alert("Payment failed: " + data.error);
+          return;
+        }
+
+        const options = {
+          key: "{{ razorpay_key_id }}",
+          amount: data.amount,
+          currency: data.currency,
+          order_id: data.id,
+          handler: function (response) {
+            fetch('/payment_success', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+              },
+              body: new URLSearchParams(response)
+            })
+            .then(res => res.json())
+            .then(data => {
+              if (data.success) {
+                alert('Payment successful!');
+                window.location.href = '/dashboard';
+              } else {
+                alert('Payment failed or not verified.');
+              }
+            });
+          }
+        };
+
+        const rzp = new Razorpay(options);
+        rzp.open();
+      })
+      .catch(err => {
+        console.error("Error initiating payment:", err);
+        alert("Error starting payment");
+      });
+
+      return false;
+    }
+  </script>
+
+  <!-- Scripts -->
+  <script src="/static/vendor/aos/aos.js"></script>
+  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/static/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="/static/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="{{ url_for('static', filename='main.js') }}" defer></script>
+
+</body>
+</html>

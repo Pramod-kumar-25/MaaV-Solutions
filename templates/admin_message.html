@@ -1,0 +1,116 @@
+<!-- admin_messages.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Admin Messages - MAAV Solutions</title>
+  <link href="static/img/favicon.ico" rel="icon" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Raleway|Poppins" rel="stylesheet" />
+  <link href="static/vendor/aos/aos.css" rel="stylesheet" />
+  <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+  <link href="static/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
+  <link href="static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+  <link href="static/vendor/remixicon/remixicon.css" rel="stylesheet" />
+  <link href="static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+
+<body>
+
+<header id="header" class="fixed-top d-flex align-items-center">
+  <div class="container d-flex align-items-center justify-content-between flex-wrap">
+    <div class="logo">
+      <h1><a href="/">MAAV SOLUTIONS</a></h1>
+    </div>
+    <nav id="navbar" class="navbar">
+      <ul>
+        <li><a class="nav-link scrollto" href="/">Home</a></li>
+        <li><a class="nav-link scrollto" href="/#services">Services</a></li>
+        <li><a class="nav-link scrollto" href="/#about">About us</a></li>
+        <li><a class="nav-link scrollto" href="/#mission">Our Mission</a></li>
+        <li><a class="nav-link scrollto" href="/#vision">Our Vision</a></li>
+        <li><a class="nav-link scrollto" href="/#contact">Contact us</a></li>
+      </ul>
+      <i class="bi bi-list mobile-nav-toggle"></i>
+    </nav>
+    <div class="d-flex align-items-center mt-2 mt-md-0">
+      {% if user %}
+        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-success btn-sm me-2">Dashboard</a>
+        <a href="{{ url_for('cart') }}" class="btn btn-outline-primary btn-sm me-2">My Cart</a>
+        <div class="dropdown">
+          <button class="btn btn-outline-dark rounded-circle dropdown-toggle px-3 py-1" type="button"
+            id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+            <li class="dropdown-header">Hello {{ name }}</li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="/logout">Logout</a></li>
+          </ul>
+        </div>
+      {% else %}
+        <a href="/login" class="btn btn-outline-primary btn-sm me-2">Login</a>
+        <a href="/signup" class="btn btn-primary btn-sm me-3">Signup</a>
+      {% endif %}
+    </div>
+  </div>
+</header>
+
+<main class="pt-5 mt-5">
+  <div class="container py-5">
+    <div class="row mb-4">
+      <div class="col-12">
+        <h1 class="fw-bold">Contact Messages</h1>
+        <hr class="mt-2 mb-4">
+      </div>
+    </div>
+
+    {% if messages %}
+    <div class="row g-4">
+      {% for key, msg in messages.items() %}
+      <div class="col-sm-12 col-md-6 col-lg-4">
+        <div class="card-service h-100">
+          <h5><i class="bi bi-person-circle me-2"></i>{{ msg.name }}</h5>
+          <p><strong>Email:</strong> {{ msg.email }}</p>
+          <p><strong>Phone:</strong> {{ msg.number }}</p>
+          <p><strong>Message:</strong><br>{{ msg.message }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p>No messages submitted yet.</p>
+    {% endif %}
+  </div>
+</main>
+
+<footer id="footer">
+  <div class="container">
+    <div class="row d-flex align-items-center">
+      <div class="col-lg-6 text-lg-left text-center">
+        <div class="copyright">
+          &copy; Copyright <strong>MAAV SOLUTIONS</strong>. All Rights Reserved
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <nav class="footer-links text-lg-right text-center pt-2 pt-lg-0">
+          <a href="/">Home</a>
+          <a href="#about">About us</a>
+          <a href="#services">Our Services</a>
+          <a href="#">Privacy Policy</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="static/vendor/aos/aos.js"></script>
+<script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="static/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="static/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="{{ url_for('static', filename='main.js') }}" defer></script>
+</body>
+</html>

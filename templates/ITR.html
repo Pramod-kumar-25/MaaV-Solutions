@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>MAAV SOLUTIONS - ITR</title>
+  <link href="static/img/favicon.png" rel="icon">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Raleway|Poppins" rel="stylesheet">
+  <link href="static/vendor/aos/aos.css" rel="stylesheet">
+  <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="static/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="static/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
+  <style>
+    .hidden { display: none; }
+    .card {
+      margin-bottom: 20px;
+      border: 1px solid #eaeaea;
+      border-radius: 10px;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    .card h5 { font-weight: bold; color: #005aa7; }
+    .note { font-size: 0.9rem; color: #b30000; font-weight: bold; }
+    .form-label { font-weight: 500; }
+
+    @media (max-width: 576px) {
+      .logo h1 {
+        font-size: 1.2rem;
+      }
+      .btn-sm {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.5rem;
+      }
+      .dropdown-menu {
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top d-flex align-items-center">
+  <div class="container d-flex align-items-center justify-content-between flex-wrap">
+    <div class="logo">
+      <h1><a href="/">MAAV SOLUTIONS</a></h1>
+    </div>
+    
+    <nav id="navbar" class="navbar">
+      <ul>
+        <li><a class="nav-link scrollto" href="/">Home</a></li>
+        <li><a class="nav-link scrollto" href="/#services">Services</a></li>
+        <li><a class="nav-link scrollto" href="/#about">About us</a></li>
+        <li><a class="nav-link scrollto" href="/#mission">Our Mission</a></li>
+        <li><a class="nav-link scrollto" href="/#vision">Our Vision</a></li>
+        <li><a class="nav-link scrollto" href="/#contact">Contact us</a></li>
+      </ul>
+      <i class="bi bi-list mobile-nav-toggle"></i>
+    </nav>
+
+
+    <div class="d-flex align-items-center mt-2 mt-sm-0">
+      {% if user %}
+        {% if role != 'admin' %}
+          <a href="{{ url_for('dashboard') }}" class="btn btn-outline-success btn-sm me-2">Dashboard</a>
+          <a href="{{ url_for('cart') }}" class="btn btn-outline-primary btn-sm me-2">My Cart</a>
+        {% endif %}
+        <div class="dropdown">
+          <button class="btn btn-outline-dark rounded-circle dropdown-toggle px-3 py-1" type="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+            <li class="dropdown-header">Hello {{ name }}</li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="/logout">Logout</a></li>
+          </ul>
+        </div>
+      {% else %}
+        <a href="/login" class="btn btn-outline-primary btn-sm me-2">Login</a>
+        <a href="/signup" class="btn btn-primary btn-sm me-3">Signup</a>
+      {% endif %}
+    </div>
+  </div>
+</header>
+
+<!-- ======= Main ======= -->
+<main class="pt-5 mt-5" style="min-height: 100vh; padding-bottom: 100px;">
+  <div class="container pb-5">
+    <div class="section-title">
+      <h2>Income Tax Returns (ITR)</h2>
+      <p>Select the ITR form and fill the details.</p>
+    </div>
+
+    <form action="/submit_service/itr" method="POST">
+      <div class="mb-4">
+        <label for="itr_type" class="form-label">Select ITR Service:</label>
+        <select id="itr_type" name="itr_type" class="form-control" required onchange="showITRForm()">
+          <option value="">-- Choose ITR Type --</option>
+          <option value="pan">PAN Registration</option>
+          <option value="itr1">ITR - 1</option>
+          <option value="itr2">ITR - 2</option>
+          <option value="itr3">ITR - 3</option>
+          <option value="itr4">ITR - 4</option>
+        </select>
+      </div>
+
+      {% set forms = {
+        'pan': ['₹499', 'PAN REGISTRATION', 'Company\'s PAN is a 10-character alphanumeric code issued by the Income Tax Department.'],
+        'itr1': ['₹999', 'ITR - 1', 'Filed by Resident Individuals with income ≤ ₹50 lakh from salary, pension, house property, or other sources.'],
+        'itr2': ['₹1999', 'ITR - 2', 'For individuals and HUFs with income from salary, capital gains, or foreign assets.'],
+        'itr3': ['₹2999', 'ITR - 3', 'For individuals/HUFs with income from business or profession.'],
+        'itr4': ['₹2999', 'ITR - 4', 'Filed by Individuals / HUF / Firm (non-LLP) under presumptive scheme.']
+      } %}
+
+      {% for key, data in forms.items() %}
+      <div id="form_{{ key }}" class="hidden card">
+        <h5>{{ data[1] }}</h5>
+        <p>{{ data[2] }}</p>
+        <p class="note">PRICE: {{ data[0] }}</p>
+        <div class="mb-3"><label class="form-label">Name as per PAN</label><input type="text" class="form-control" name="name_{{ key }}" required></div>
+        <div class="mb-3"><label class="form-label">Mobile Number</label><input type="tel" class="form-control" name="phone_{{ key }}" pattern="[0-9]{10}" required></div>
+        <div class="mb-3"><label class="form-label">Email ID</label><input type="email" class="form-control" name="email_{{ key }}" required></div>
+        <div class="mb-3"><label class="form-label">PAN</label><input type="text" class="form-control" name="pan_{{ key }}" required></div>
+      </div>
+      {% endfor %}
+
+      <div class="text-center mt-4">
+        <button type="submit" class="btn btn-success px-5">Submit</button>
+      </div>
+    </form>
+  </div>
+</main>
+
+<!-- ======= Footer ======= -->
+<footer id="footer1">
+  <div class="container">
+    <div class="row d-flex align-items-center">
+      <div class="col-lg-6 text-lg-left text-center">
+        <div class="copyright1">
+          &copy; Copyright <strong>MAAV SOLUTIONS</strong>. All Rights Reserved
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <nav class="footer-links text-lg-right text-center pt-2 pt-lg-0">
+          <a href="/">Home</a>
+          <a href="#about">About us</a>
+          <a href="#services">Services</a>
+          <a href="#">Privacy Policy</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ======= Scripts ======= -->
+<script>
+function showITRForm() {
+  const selected = document.getElementById('itr_type').value;
+  const types = ['pan', 'itr1', 'itr2', 'itr3', 'itr4'];
+
+  types.forEach(type => {
+    const form = document.getElementById('form_' + type);
+    if (form) {
+      if (type === selected) {
+        form.classList.remove('hidden');
+        form.querySelectorAll('input').forEach(input => input.setAttribute('required', 'required'));
+      } else {
+        form.classList.add('hidden');
+        form.querySelectorAll('input').forEach(input => input.removeAttribute('required'));
+      }
+    }
+  });
+}
+</script>
+
+<script src="static/vendor/aos/aos.js"></script>
+<script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="static/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="static/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="{{ url_for('static', filename='main.js') }}" defer></script>
+
+</body>
+</html>
