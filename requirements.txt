@@ -1,9 +1,2 @@
 Flask==3.0.2
 Flask_Mail==0.9.1
-<<<<<<< HEAD
-firebase-admin
-pyrebase4
-
-=======
->>>>>>> 86b260f6abc041dbb2a062364de855e345938ce2
-
