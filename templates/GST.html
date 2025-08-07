@@ -61,7 +61,7 @@
         <li><a class="nav-link scrollto" href="/#services">Services</a></li>
         <li><a class="nav-link scrollto" href="/#about">About us</a></li>
         <li><a class="nav-link scrollto" href="/#mission">Our Mission</a></li>
-        <li><a class="nav-link scrollto" href="/#vision">Our Vision</a></li>
+          <li><a class="nav-link scrollto" href="/#vision">Our Vision</a></li>
         <li><a class="nav-link scrollto" href="/#contact">Contact us</a></li>
       </ul>
       <i class="bi bi-list mobile-nav-toggle"></i>
@@ -105,68 +105,44 @@
         <select id="gst_type" name="gst_type" class="form-control" required onchange="showGSTForm()">
           <option value="">-- Choose GST Type --</option>
           <option value="gst_registration">GST Registration</option>
-          <option value="monthly_filing">Monthly Filing (GSTR-1, 3B, 5)</option>
+          <option value="gstr1">GSTR-1</option>
+          <option value="gstr3b">GSTR-3B</option>
+          <option value="gstr4">GSTR-4</option>
+          <option value="gstr5">GSTR-5</option>
+          <option value="gstr7">GSTR-7</option>
           <option value="gstr9">GSTR-9</option>
         </select>
       </div>
 
       {% set gst_services = [
         {'key': 'gst_registration', 'title': 'GST REGISTRATION', 'desc': 'Under GST, businesses whose turnover exceeds the threshold of ₹40L / ₹20L / ₹10L (based on region) must register as a normal taxable person.'},
-        {'key': 'monthly_filing', 'title': 'Monthly Filing (GSTR-1, GSTR-3B, GSTR-5)', 'desc': 'Includes monthly/quarterly filing of GSTR-1, GSTR-3B, and GSTR-5 for eligible businesses.'},
+        {'key': 'gstr1', 'title': 'GSTR-1', 'desc': 'GSTR-1 is a monthly/quarterly return that summarizes all outward supplies of goods and services.'},
+        {'key': 'gstr3b', 'title': 'GSTR-3B', 'desc': 'A self-declared summary GST return filed every month (quarterly for QRMP scheme) to discharge GST liabilities.'},
+        {'key': 'gstr4', 'title': 'GSTR-4', 'desc': 'Annual return for taxpayers under composition scheme summarizing inward/outward supplies and reverse charge details.'},
+        {'key': 'gstr5', 'title': 'GSTR-5', 'desc': 'Filed by non-resident taxable persons for transactions made in India during a specified period.'},
+        {'key': 'gstr7', 'title': 'GSTR-7', 'desc': 'Return filed by persons deducting TDS while making payments to suppliers under GST law.'},
         {'key': 'gstr9', 'title': 'GSTR-9', 'desc': 'Annual return to be filed by regular taxpayers including SEZ units/developers, covering all GST transactions in the FY.'}
       ] %}
 
       {% for svc in gst_services %}
-<div id="form_{{ svc.key }}" class="hidden card">
-  <h5>{{ svc.title }}</h5>
-  <p>{{ svc.desc }}</p>
-  <p class="note">NOTE: Penalty is levied if not paid within due date.</p>
-
-  <div class="mb-3">
-    <label class="form-label">Select Plan</label>
-    <select name="plan_{{ svc.key }}" class="form-control" required>
-
-      {% if svc.key == 'gst_registration' %}
-        <option value="Sole Proprietorship/Individual">Sole Proprietorship/Individual – ₹799</option>
-        <option value="Partnership/LLP">Partnership/LLP – ₹1,999</option>
-        <option value="Private Limited Company">Private Limited Company – ₹2,999</option>
-        <option value="E-commerce Seller/Other">E-commerce Seller/Other – ₹2,499</option>
-
-      {% elif svc.key == 'monthly_filing' %}
-        <option value="Sole Proprietors/Small Retailers(GSTR1, 3B)">Sole Proprietors/Small Retailers (GSTR1, 3B) – ₹1,999/month</option>
-        <option value="Partnerships/LLPs">Partnerships/LLPs – ₹4,999/month</option>
-        <option value="Private Limited Companies">Private Limited Companies – ₹4,999/month</option>
-        <option value="E-commerce Sellers (GSTR1, 3B)">E-commerce Sellers (GSTR1, 3B) – ₹4,999/month</option>
-        <option value="Nil-Transaction Clients">Nil-Transaction Clients – ₹1,999/month</option>
-        <option value="Non-Residents & Foreign Entities">Non-Residents & Foreign Entities (GSTR-5) – ₹9,999/month</option>
-
-      {% elif svc.key == 'gstr9' %}
-        <option value="Sole Proprietors/Small Retailers">Sole Proprietors/Small Retailers – ₹1,999</option>
-        <option value="Partnerships/LLPs">Partnerships/LLPs – ₹4,999</option>
-        <option value="Private Limited Companies">Private Limited Companies – ₹4,999</option>
-        <option value="E-commerce Sellers">E-commerce Sellers – ₹4,999</option>
-        <option value="Nil-Transaction Clients">Nil-Transaction Clients – ₹1,999</option>
-        <option value="Non-Residents & Foreign Entities">Non-Residents & Foreign Entities – ₹9,999</option>
-      {% endif %}
-
-    </select>
-  </div>
-
-  <div class="mb-3"><label class="form-label">Name as per PAN</label>
-    <input type="text" class="form-control" name="name_{{ svc.key }}" required>
-  </div>
-  <div class="mb-3"><label class="form-label">Mobile Number</label>
-    <input type="tel" class="form-control" name="phone_{{ svc.key }}" pattern="[0-9]{10}" required>
-  </div>
-  <div class="mb-3"><label class="form-label">Email ID</label>
-    <input type="email" class="form-control" name="email_{{ svc.key }}" required>
-  </div>
-  <div class="mb-3"><label class="form-label">PAN</label>
-    <input type="text" class="form-control" name="pan_{{ svc.key }}" required>
-  </div>
-</div>
-{% endfor %}
-
+      <div id="form_{{ svc.key }}" class="hidden card">
+        <h5>{{ svc.title }}</h5>
+        <p>{{ svc.desc }}</p>
+        <p class="note">NOTE: Penalty is levied if not paid within due date.</p>
+        <div class="mb-3"><label class="form-label">Select Plan</label>
+          <select name="plan_{{ svc.key }}" class="form-control" required>
+            <option value="Starter - ₹499">Starter – Up to 50 invoices – ₹499</option>
+            <option value="Standard - ₹999">Standard – 51–200 invoices – ₹999</option>
+            <option value="Advanced - ₹1,999">Advanced – 201–500 invoices – ₹1,999</option>
+            <option value="Enterprise - ₹2,999">Enterprise – 500+ invoices – ₹2,999</option>
+          </select>
+        </div>
+        <div class="mb-3"><label class="form-label">Name as per PAN</label><input type="text" class="form-control" name="name_{{ svc.key }}" required></div>
+        <div class="mb-3"><label class="form-label">Mobile Number</label><input type="tel" class="form-control" name="phone_{{ svc.key }}" pattern="[0-9]{10}" required></div>
+        <div class="mb-3"><label class="form-label">Email ID</label><input type="email" class="form-control" name="email_{{ svc.key }}" required></div>
+        <div class="mb-3"><label class="form-label">PAN</label><input type="text" class="form-control" name="pan_{{ svc.key }}" required></div>
+      </div>
+      {% endfor %}
 
       <div class="text-center mt-4">
         <button type="submit" class="btn btn-success px-5">Submit</button>
@@ -199,7 +175,7 @@
 <script>
 function showGSTForm() {
   const selected = document.getElementById('gst_type').value;
-  const allTypes = ['gst_registration', 'monthly_filing', 'gstr9'];
+  const allTypes = ['gst_registration', 'gstr1', 'gstr3b', 'gstr4', 'gstr5', 'gstr7', 'gstr9'];
   allTypes.forEach(type => {
     const section = document.getElementById('form_' + type);
     if (section) {
