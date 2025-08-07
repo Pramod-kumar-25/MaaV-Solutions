@@ -4,4 +4,3 @@ firebase-admin
 pyrebase4
 python-dotenv
 razorpay
-setuptools

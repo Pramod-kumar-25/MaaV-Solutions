@@ -201,7 +201,7 @@ def submit_service(service):
         pan = request.form.get('pan_bookkeeping')
         plan = request.form.get('plan_bookkeeping')
 
-        plan_name = plan.split(' - ')[0].strip() if plan else None  # e.g. "Starter"
+        plan_name = plan.split(' - ')[0].strip() if plan else None
 
         price_map = {
             'Starter': 1499,
@@ -226,12 +226,37 @@ def submit_service(service):
         phone = request.form.get(f'phone_{gst_type}')
         pan = request.form.get(f'pan_{gst_type}')
         plan = request.form.get(f'plan_{gst_type}') or "Basic"
-        plan_name = plan  # GST plans already short like "Starter", "Standard", etc.
+        plan_name = plan
 
-        price = 499 if '499' in plan else \
-                999 if '999' in plan else \
-                1999 if '1,999' in plan else \
-                2999 if '2,999' in plan else 3000
+        gst_price_map = {
+            'gst_registration': {
+                'Sole Proprietorship/Individual': 799,
+                'Partnership/LLP': 1999,
+                'Private Limited Company': 2999,
+                'E-commerce Seller/Other': 2499
+            },
+            'monthly_filing': {
+                'Sole Proprietors/Small Retailers(GSTR1, 3B)': 1999,
+                'Partnerships/LLPs': 4999,
+                'Private Limited Companies': 4999,
+                'E-commerce Sellers (GSTR1, 3B)': 4999,
+                'Nil-Transaction Clients': 1999,
+                'Non-Residents & Foreign Entities': 9999
+            },
+            'gstr9': {
+                'Sole Proprietors/Small Retailers': 1999,
+                'Partnerships/LLPs': 4999,
+                'Private Limited Companies': 4999,
+                'E-commerce Sellers': 4999,
+                'Nil-Transaction Clients': 1999,
+                'Non-Residents & Foreign Entities': 9999
+            }
+        }
+
+        price = gst_price_map.get(gst_type, {}).get(plan_name, -1)
+        if price == -1:
+            print(f"❌ Unknown GST plan: {plan_name} for {gst_type}")
+            return redirect(url_for('index'))
 
         full_service = f"GST - {gst_type.upper()}"
 
@@ -295,6 +320,7 @@ def submit_service(service):
         print("❌ Error saving to cart:", e)
 
     return redirect(url_for('index'))
+
 
 
 @app.route('/update_status/<uid>/<key>/<action>')
