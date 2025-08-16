@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>MAAV SOLUTIONS - Index</title>
+  <link href="static/img/favicon.ico" rel="icon" type="image/x-icon" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Raleway|Poppins" rel="stylesheet" />
+  <link href="static/vendor/aos/aos.css" rel="stylesheet" />
+  <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+  <link href="static/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
+  <link href="static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+  <link href="static/vendor/remixicon/remixicon.css" rel="stylesheet" />
+  <link href="static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <style>
+    .card {
+      border-radius: 12px;
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .badge {
+      font-size: 0.8rem;
+      padding: 0.4em 0.6em;
+      border-radius: 6px;
+    }
+    @media (max-width: 576px) {
+  .maav-logo {
+    font-size: 1rem;
+  }
+
+  .btn-sm {
+    font-size: 0.75rem;
+    padding: 0.35rem 0.5rem;
+  }
+
+  .dropdown-menu {
+    font-size: 0.8rem;
+  }
+
+  #header {
+    padding: 10px 0;
+  }
+
+  .navbar ul {
+    gap: 6px;
+    font-size: 0.9rem;
+  }
+}
+@media (min-width: 577px) {
+  .dropdown-menu-end {
+    right: 0 !important;
+    left: auto !important;
+    transform: translateX(0) !important;
+  }
+}
+
+
+    
+  </style>
+</head>
+
+<body>
+  <div class="container mt-5">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+  </div>
+
+
+  <header id="header" class="fixed-top d-flex align-items-center">
+  <div class="container-fluid d-flex flex-wrap align-items-center justify-content-between">
+
+    <!-- Logo -->
+    <div class="logo">
+      <h1 class="maav-logo mb-0"><a href="/">MAAV SOLUTIONS</a></h1>
+    </div>
+
+    <!-- Navbar -->
+    <nav id="navbar" class="navbar">
+      <ul>
+        <li><a class="nav-link scrollto" href="/">Home</a></li>
+        <li><a class="nav-link scrollto" href="#services">Services</a></li>
+        <li><a class="nav-link scrollto" href="#about">About us</a></li>
+        <li><a class="nav-link scrollto" href="#mission">Our Mission</a></li>
+          <li><a class="nav-link scrollto" href="#vision">Our Vision</a></li>
+        <li><a class="nav-link scrollto" href="#contact">Contact us</a></li>
+      </ul>
+      <i class="bi bi-list mobile-nav-toggle"></i>
+    </nav>
+
+    <!-- User actions -->
+    <div class="d-flex align-items-center flex-wrap gap-2 mt-2 mt-sm-0">
+      {% if user %}
+  <a href="{{ url_for('dashboard') }}" class="btn btn-outline-success btn-sm">Dashboard</a>
+  {% if role != 'admin' %}
+    <a href="{{ url_for('cart') }}" class="btn btn-outline-primary btn-sm">My Cart</a>
+  {% endif %}
+
+        <div class="dropdown">
+          <button class="btn btn-outline-dark btn-sm rounded-circle dropdown-toggle" type="button"
+            id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+            <li class="dropdown-header">Hello {{ name }}</li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="/logout">Logout</a></li>
+          </ul>
+        </div>
+      {% else %}
+        <a href="{{ url_for('login_page') }}" class="btn btn-outline-primary btn-sm">Login</a>
+        <a href="{{ url_for('signup_page') }}" class="btn btn-primary btn-sm">Signup</a>
+      {% endif %}
+    </div>
+
+  </div>
+</header>
+
+
+  <section id="home" class="d-flex align-items-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 pt-5 pt-lg-0 d-flex flex-column justify-content-center">
+          <h1 data-aos="fade-up">Returns Filing Services</h1><br />
+          {% if user %}
+            <h2 data-aos="fade-up"><strong>Hello {{ name }} {{ role|capitalize }}</strong></h2>
+          {% else %}
+            <h2 data-aos="fade-up"><strong>Streamline your Taxes Anytime, Anywhere</strong></h2>
+          {% endif %}
+        </div>
+        <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-left" data-aos-delay="200">
+          <img src="static/img/maav_home.png" class="img-logo" id="img" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main id="main">
+    <section id="services" class="services">
+      <div class="container">
+        {% if user and role == 'admin' %}
+          <div class="section-title" data-aos="fade-up">
+            <h2>Your Work</h2>
+          </div>
+          {% if all_services %}
+            <div class="row">
+              {% for uid, services in all_services.items() %}
+                {% for key, entry in services.items() %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                  <div class="card shadow-sm border-0 h-100">
+                    <div class="card-body">
+                      <p class="card-text"><strong>Name:</strong> {{ entry.user_name or 'N/A' }}</p>
+                      <p class="card-text"><strong>Email:</strong> {{ entry.user_email or entry.email }}</p>
+                      <p class="card-text"><strong>Phone:</strong> {{ entry.user_phone or 'N/A' }}</p>
+                      <p class="card-text"><strong>PAN:</strong> {{ entry.user_pan or 'N/A' }}</p>
+                      <hr>
+                      <p class="card-text"><strong>Service:</strong> {{ entry.service }}</p>
+                      <p class="card-text"><strong>Status:</strong>
+                        <span class="badge
+                          {% if entry.status == 'completed' %} bg-info
+                          {% elif entry.admin_status == 'accepted' %} bg-success
+                          {% elif entry.admin_status == 'rejected' %} bg-danger
+                          {% else %} bg-secondary {% endif %}">
+                          {% if entry.status == 'completed' %}
+                            Completed
+                          {% else %}
+                            {{ entry.admin_status|capitalize }}
+                          {% endif %}
+                        </span>
+                      </p>
+                      <div class="d-flex justify-content-start mt-3">
+                        {% if entry.status != 'completed' %}
+                          {% if entry.admin_status == 'pending' %}
+                            <a href="{{ url_for('update_status', uid=uid, key=key, action='accepted') }}"
+                              class="btn btn-sm btn-outline-success me-2">Accept</a>
+                            <a href="{{ url_for('update_status', uid=uid, key=key, action='rejected') }}"
+                              class="btn btn-sm btn-outline-danger">Reject</a>
+                          {% elif entry.admin_status in ['accepted', 'rejected'] %}
+                            <a href="{{ url_for('update_status', uid=uid, key=key, action='completed') }}"
+                              class="btn btn-sm btn-outline-primary">Complete</a>
+                          {% endif %}
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              {% endfor %}
+            </div>
+          {% else %}
+            <p class="text-center">No service submissions available yet.</p>
+          {% endif %}
+        {% else %}
+          <div class="section-title" data-aos="fade-up">
+            <h2>Services</h2>
+            <p>These are the Services we are providing related to ITR, GST, and Bookkeeping</p>
+          </div>
+          <div class="row">
+            <div class="col-md-6 col-lg-4 d-flex align-items-stretch mb-5 mb-lg-0">
+              <a href="{{ url_for('itr_page') }}" class="box-link">
+                <div class="icon-box" data-aos="zoom-in-right" data-aos-delay="200">
+                  <div class="icon"><i class="ri ri-currency-fill"></i></div>
+                  <h4 class="title">Income Tax Returns</h4>
+                  <p class="description">A tax levied by the Government of India on individuals' income. 
+                                    Governed by the Income-tax Act, 1961, it is essential for funding public services. 
+                                    Taxpayers must file annual returns, detailing earnings, deductions, and tax liabilities</p>
+                </div>
+              </a>
+            </div>
+            <div class="col-md-6 col-lg-4 d-flex align-items-stretch mb-5 mb-lg-0">
+              <a href="{{ url_for('gst_page') }}" class="box-link">
+                <div class="icon-box" data-aos="zoom-in" data-aos-delay="100">
+                  <div class="icon"><i class="bi bi-receipt"></i></div>
+                  <h4 class="title">GST Returns</h4>
+                  <p class="description">Goods and Services Tax is introduced to simplify India's indirect tax structure. 
+                               <br>Effective from July 1, 2017, it replaced taxes like excise duty and VAT. 
+                                   GST promotes economic growth by creating a unified tax system.</p>
+                </div>
+              </a>
+            </div>
+            <div class="col-md-6 col-lg-4 d-flex align-items-stretch mb-5 mb-lg-0">
+              <a href="{{ url_for('bookkeeping_page') }}" class="box-link">
+                <div class="icon-box" data-aos="zoom-in-left" data-aos-delay="200">
+                  <div class="icon"><i class="bi bi-list-check"></i></div>
+                  <h4 class="title">Bookkeeping</h4>
+                  <p class="description">Streamline your finances with our hassle-free online bookkeeping services—accessible anytime, anywhere. Stay organized, compliant, and focused on growing your business with expert support at your
+                    fingertips.
+<br>
+<br>
+</p>
+                </div>
+              </a>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </section>
+      <!-- ======= About Us Section ======= -->
+    <section id="about" class="about">
+      <div class="container">
+
+        <div class="section-title" data-aos="fade-up">
+          <h2>About Us</h2>
+        </div>
+
+        <div class="row content">
+          <div data-aos="fade-up" data-aos-delay="150">
+            <p>
+              Welcome to MAAV Solutions where we are committed to simplifying and streamlining the process of tax return filing across the nation. At MAAV Solutions, we understand that managing your taxes can be a complex and time-consuming task. That's why we've embarked on a mission to revolutionize the way individuals and businesses navigate the intricacies of tax compliance.
+            </p>
+           
+          </div>
+        </div>
+        <div class="row content">
+          <div class="col-lg-6 pt-4 pt-lg-0" data-aos="fade-up" data-aos-delay="300">
+            <a href="#about" class="btn-learn-more scrollto" onclick="toggleDetails()">Learn More</a>
+          </div>
+        </div>
+
+        <section id="details" class="details" data-aos="fade-up" data-aos-delay="300" style="display: none;">
+          <div class="row content">
+            <div class="col-lg-12">
+              <p>
+                <h4><B>WHY CHOOSE MAAV SOLUTIONS?</B></h4><br>
+<B>Nationwide Coverage:</B> MAAV SOLUTIONS is dedicated to serving clients from coast to coast. No matter where you are in the country, our platform is designed to accommodate your specific tax requirements.<br>
+<B>User-Friendly Interface:</B> We understand that not everyone is a tax expert. Our user-friendly interface is crafted to guide you through the filing process, making it easy for individuals and businesses to complete their tax returns with confidence.<br>
+<B>Expert Guidance:</B> Behind our platform is a team of experienced tax professionals ready to assist you. Whether you have questions about deductions, credits, or any other tax-related concerns, our experts are here to provide the guidance you need.<br>
+<B>Security and Compliance:</B> Your data security is our top priority. We employ state-of-the-art encryption and security measures to ensure that your sensitive information is protected. Rest assured, MAAV SOLUTIONS is fully compliant with all relevant regulations.<br>
+<B>Innovation:</B> As tax laws evolve, so do we. Our commitment to innovation means that you can rely on MAAV SOLUTIONS to stay ahead of the curve, incorporating the latest updates and features to enhance your tax filing experience.<br>
+Join us at MAAV SOLUTIONS and experience a new era of hassle-free tax compliance. Let us take the complexity out of filing your tax returns, allowing you to focus on what matters most your life and your business.<br>
+
+              </p>
+            </div>
+          </div>
+        </section>
+ 
+      </div>
+    </section><!-- End About Us Section -->
+
+    
+
+
+
+  
+
+    <!-- ======= Mission Section ======= -->
+    <section id="mission" class="testimonials section-bg">
+      <div class="container">
+
+        <div class="section-title" data-aos="fade-up">
+          <h2>Our Mission</h2>
+        </div>
+
+        <div class="row content">
+          <div data-aos="fade-up" data-aos-delay="150">
+            <p><B>Empowering Individuals & Simplifying Finances </B><br>
+               Our mission is to revolutionize the tax filing experience by providing a user-friendly online platform that enables
+               individuals nationwide to effortlessly navigate the complexities of tax compliance. 
+               We are committed to delivering innovative solutions that streamline the filing process, 
+               ensuring accuracy, accessibility, and peace of mind for every taxpayer. Through a customer-centric approach, 
+               we aim to empower individuals to take control of their financial responsibilities, 
+               fostering a more confident and informed approach to tax management across the country."
+              </p>
+          </div>
+        </div>
+      </div>
+    </section><!-- End Mission Section -->
+
+       
+
+   
+
+    <!-- ======= vision Section ======= -->
+    <section id="vision" class="testimonials section-bg">
+      <div class="container">
+
+        <div class="section-title" data-aos="fade-up">
+          <h2>Our Vision</h2>
+        </div>
+
+        <div class="row content">
+          <div data-aos="fade-up" data-aos-delay="150">
+            <p><B>Enabling Financial Freedom & Nationwide Reach</B><br>
+                At MAAV Solutions, our vision is to democratize access to financial empowerment. 
+                We aspire to extend our innovative online platform to every corner of the country, ensuring that tax filing becomes accessible to all.
+                By leveraging technology as a catalyst for inclusivity, we envision a future where every individual, regardless of location or background, can seamlessly navigate tax compliance. 
+                Our commitment extends beyond borders, aiming to bridge gaps and make our platform synonymous with universal access to financial freedom. 
+                At MAAV Solutions, we envision a nation where everyone has the tools they need for confident and accessible tax filing, fostering a brighter and more inclusive
+              </p>
+          </div>
+        </div>
+      </div>
+    </section><!-- End Vision Section -->
+
+
+
+    <section id="contact" class="contact mt-5">
+      <div class="container">
+        <div class="section-title" data-aos="fade-up">
+          <h2>Contact Us</h2>
+        </div>
+        <div class="row">
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="contact-about">
+              <h3>MAAV SOLUTIONS</h3>
+              <p>Welcome to MAAV Solutions...</p>
+              <div class="social-links">
+                <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-5 col-md-12" data-aos="fade-up" data-aos-delay="300">
+            <form id="contactForm" class="email-form" action="/contact" method="POST">
+              <div class="form-group">
+                <input type="text" name="name" class="form-control" placeholder="Your Name" required />
+              </div>
+              <div class="form-group">
+                <input type="email" name="email" class="form-control" placeholder="Your Email" required />
+              </div>
+              <div class="form-group">
+                <input type="tel" name="number" class="form-control" placeholder="Mobile Number" pattern="[0-9]{10}" required />
+              </div>
+              <div class="form-group">
+                <textarea name="message" rows="5" class="form-control" placeholder="Message" required></textarea>
+              </div>
+              <div class="text-center"><button type="submit">Send Message</button></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer">
+    <div class="container">
+      <div class="row d-flex align-items-center">
+        <div class="col-lg-6 text-lg-left text-center">
+          <div class="copyright">
+            &copy; Copyright <strong>MAAV SOLUTIONS</strong>. All Rights Reserved
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <nav class="footer-links text-lg-right text-center pt-2 pt-lg-0">
+            <a href="/">Home</a>
+            <a href="#about">About us</a>
+            <a href="#services">Our Services</a>
+            <a href="#">Privacy Policy</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="static/vendor/aos/aos.js"></script>
+  <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="static/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="static/vendor/swiper/swiper-bundle.min.js"></script>
+  <!-- Load SweetAlert2 first -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<!-- Then your custom script -->
+<script src="{{ url_for('static', filename='main.js') }}" defer></script>
+
+  <script>
+document.addEventListener("DOMContentLoaded", function () {
+  const urlParams = new URLSearchParams(window.location.search);
+  const alertParam = urlParams.get('alert');
+
+  if (alertParam === 'success') {
+    alert("📬 Your message has been sent successfully. We'll get back to you soon!");
+  } else if (alertParam === 'error') {
+    alert("❌ Failed to send message. Please try again later.");
+  } else if (alertParam === 'incomplete') {
+    alert("❗ Please fill in all fields before submitting.");
+  }
+
+  // Remove the alert param from URL after showing
+  if (alertParam) {
+    window.history.replaceState(null, null, window.location.pathname);
+  }
+});
+</script>
+
+  
+</body>
+
+</html>

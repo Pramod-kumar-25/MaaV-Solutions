@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Bookkeeping - MAAV Solutions</title>
+  <link href="static/img/favicon.ico" rel="icon" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Raleway|Poppins" rel="stylesheet" />
+  <link href="static/vendor/aos/aos.css" rel="stylesheet" />
+  <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+  <link href="static/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
+  <link href="static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+  <link href="static/vendor/remixicon/remixicon.css" rel="stylesheet" />
+  <link href="static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <style>
+    .card {
+      border: 1px solid #eaeaea;
+      border-radius: 10px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      margin-bottom: 20px;
+    }
+    .note {
+      font-size: 0.9rem;
+      color: #b30000;
+      font-weight: bold;
+    }
+
+    @media (max-width: 576px) {
+      .logo h1 {
+        font-size: 1rem;
+      }
+      .btn-sm {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.5rem;
+      }
+      .dropdown-menu {
+        font-size: 0.9rem;
+      }
+      #header {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top d-flex align-items-center">
+  <div class="container-fluid d-flex align-items-center justify-content-between px-3 flex-wrap">
+    <div class="logo">
+      <h1><a href="/">MAAV SOLUTIONS</a></h1>
+    </div>
+
+    <nav id="navbar" class="navbar">
+      <ul>
+        <li><a class="nav-link scrollto" href="/">Home</a></li>
+        <li><a class="nav-link scrollto" href="/#services">Services</a></li>
+        <li><a class="nav-link scrollto" href="/#about">About us</a></li>
+        <li><a class="nav-link scrollto" href="/#mission">Our Mission</a></li>
+        <li><a class="nav-link scrollto" href="/#vision">Our Vision</a></li>
+        <li><a class="nav-link scrollto" href="/#contact">Contact us</a></li>
+      </ul>
+      <i class="bi bi-list mobile-nav-toggle"></i>
+    </nav>
+
+    <div class="d-flex align-items-center mt-2 mt-sm-0">
+      {% if user %}
+        {% if role != 'admin' %}
+          <a href="{{ url_for('dashboard') }}" class="btn btn-outline-success btn-sm me-2">Dashboard</a>
+          <a href="{{ url_for('cart') }}" class="btn btn-outline-primary btn-sm me-2">My Cart</a>
+        {% endif %}
+        <div class="dropdown me-2">
+          <button class="btn btn-outline-dark rounded-circle dropdown-toggle px-3 py-1" type="button" data-bs-toggle="dropdown">
+            <i class="bi bi-person-circle"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li class="dropdown-header">Hello {{ name }}</li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item text-danger" href="/logout">Logout</a></li>
+          </ul>
+        </div>
+      {% else %}
+        <a href="/login" class="btn btn-outline-primary btn-sm me-2">Login</a>
+        <a href="/signup" class="btn btn-primary btn-sm me-3">Signup</a>
+      {% endif %}
+    </div>
+  </div>
+</header>
+
+<!-- ======= Main Section ======= -->
+<main class="pt-5 mt-5">
+  <div class="container py-5">
+    <div class="section-title">
+      <h2>Bookkeeping Services</h2>
+      <p>Track your business finances with our monthly or yearly plans. Choose a plan below and fill in your details.</p>
+    </div>
+
+    <form action="/submit_service/bookkeeping" method="POST" class="card">
+      <div class="mb-3">
+        <label class="form-label">Select Plan</label>
+        <select name="plan_bookkeeping" class="form-control" required>
+          <option value="">-- Choose Plan --</option>
+          <option value="Starter - ₹1,499/mo">Starter - ₹1,499/mo</option>
+          <option value="Standard - ₹2,499/mo">Standard - ₹2,499/mo</option>
+          <option value="Professional - ₹4,999/mo">Professional - ₹4,999/mo</option>
+          <option value="Enterprise - ₹7,999/mo">Enterprise - ₹7,999/mo</option>
+          <option value="Custom Plan">Custom Plan (Contact Us)</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Name as per PAN</label>
+        <input type="text" name="name_bookkeeping" class="form-control" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Mobile Number</label>
+        <input type="tel" name="phone_bookkeeping" class="form-control" pattern="[0-9]{10}" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Email ID</label>
+        <input type="email" name="email_bookkeeping" class="form-control" required />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">PAN</label>
+        <input type="text" name="pan_bookkeeping" class="form-control" required />
+      </div>
+      <div class="text-center mt-4">
+        <button type="submit" class="btn btn-success px-5">Submit</button>
+      </div>
+    </form>
+  </div>
+</main>
+
+<!-- ======= Contact Us Section ======= -->
+<section id="contact" class="contact">
+  <div class="container">
+    <div class="section-title" data-aos="fade-up">
+      <h2>Contact Us</h2>
+    </div>
+    <div class="row">
+      <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="contact-about">
+          <h3>MAAV SOLUTIONS</h3>
+          <p>We help startups and growing businesses with their financial operations. Contact us anytime.</p>
+          <div class="social-links">
+            <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+            <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+            <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+            <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-5 col-md-12" data-aos="fade-up" data-aos-delay="300">
+        <form id="contactForm" class="email-form" action="/contact" method="POST">
+          <div class="form-group">
+            <input type="text" name="name" class="form-control" placeholder="Your Name" required />
+          </div>
+          <div class="form-group">
+            <input type="email" name="email" class="form-control" placeholder="Your Email" required />
+          </div>
+          <div class="form-group">
+            <input type="tel" name="number" class="form-control" placeholder="Mobile Number" pattern="[0-9]{10}" required />
+          </div>
+          <div class="form-group">
+            <textarea name="message" rows="5" class="form-control" placeholder="Message" required></textarea>
+          </div>
+          <div class="text-center"><button type="submit">Send Message</button></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======= Footer ======= -->
+<footer id="footer">
+  <div class="container">
+    <div class="row d-flex align-items-center">
+      <div class="col-lg-6 text-lg-left text-center">
+        <div class="copyright">
+          &copy; Copyright <strong>MAAV SOLUTIONS</strong>. All Rights Reserved
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <nav class="footer-links text-lg-right text-center pt-2 pt-lg-0">
+          <a href="/">Home</a>
+          <a href="#about">About us</a>
+          <a href="#services">Our Services</a>
+          <a class="nav-link scrollto" href="#mission">Our Mission</a>
+          <a class="nav-link scrollto" href="#vision">Our Vision</a>
+          <a href="#">Privacy Policy</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Scripts -->
+<script src="static/vendor/aos/aos.js"></script>
+<script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="static/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="static/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="{{ url_for('static', filename='main.js') }}" defer></script>
+
+</body>
+</html>

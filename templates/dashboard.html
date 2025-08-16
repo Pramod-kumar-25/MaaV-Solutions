@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Dashboard - MAAV Solutions</title>
+  <link href="static/img/favicon.ico" rel="icon" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Raleway|Poppins" rel="stylesheet" />
+  <link href="static/vendor/aos/aos.css" rel="stylesheet" />
+  <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+  <link href="static/vendor/boxicons/css/boxicons.min.css" rel="stylesheet" />
+  <link href="static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+  <link href="static/vendor/remixicon/remixicon.css" rel="stylesheet" />
+  <link href="static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <style>
+    main {
+      min-height: 100vh;
+      padding-bottom: 80px;
+    }
+
+    .card-service {
+      border: 1px solid #ddd;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      padding: 20px;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .card-service:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .status-badge {
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+    }
+
+    .status-inprogress {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+
+    .status-accepted {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .status-rejected {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    .status-completed {
+      background-color: #cce5ff;
+      color: #004085;
+    }
+
+    @media (max-width: 576px) {
+      .logo h1 {
+        font-size: 1rem;
+      }
+
+      .btn-sm {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.5rem;
+      }
+
+      .dropdown-menu {
+        font-size: 0.9rem;
+      }
+
+      #header {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header id="header" class="fixed-top d-flex align-items-center">
+  <div class="container d-flex align-items-center justify-content-between flex-wrap">
+    <div class="logo">
+      <h1><a href="/">MAAV SOLUTIONS</a></h1>
+    </div>
+    <nav id="navbar" class="navbar">
+      <ul>
+        <li><a class="nav-link scrollto" href="/">Home</a></li>
+        <li><a class="nav-link scrollto" href="/#services">Services</a></li>
+        <li><a class="nav-link scrollto" href="/#about">About us</a></li>
+        <li><a class="nav-link scrollto" href="/#mission">Our Mission</a></li>
+        <li><a class="nav-link scrollto" href="/#vision">Our Vision</a></li>
+        <li><a class="nav-link scrollto" href="/#contact">Contact us</a></li>
+      </ul>
+      <i class="bi bi-list mobile-nav-toggle"></i>
+    </nav>
+
+    <div class="d-flex align-items-center mt-2 mt-md-0">
+      {% if user %}
+        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-success btn-sm me-2">
+          {% if role == 'admin' %}Admin Dashboard{% else %}Dashboard{% endif %}
+        </a>
+        {% if role != 'admin' %}
+          <a href="{{ url_for('cart') }}" class="btn btn-outline-primary btn-sm me-2">My Cart</a>
+        {% endif %}
+        <div class="dropdown">
+          <button class="btn btn-outline-dark rounded-circle dropdown-toggle px-3 py-1" type="button"
+                  id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+            <li class="dropdown-header">Hello {{ name }}</li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="/logout">Logout</a></li>
+          </ul>
+        </div>
+      {% else %}
+        <a href="/login" class="btn btn-outline-primary btn-sm me-2">Login</a>
+        <a href="/signup" class="btn btn-primary btn-sm me-3">Signup</a>
+      {% endif %}
+    </div>
+  </div>
+</header>
+
+<main class="pt-5 mt-5">
+  <div class="container py-5">
+    <div class="row mb-4">
+      <div class="col-12">
+        <h1 class="fw-bold">
+          {% if role == 'admin' %}
+            User Messages
+          {% else %}
+            Your Services
+          {% endif %}
+        </h1>
+        <hr class="mt-2 mb-4">
+      </div>
+    </div>
+
+    {% if role == 'admin' %}
+      {% if messages %}
+        <div class="row g-4">
+          {% for key, msg in messages.items() %}
+          <div class="col-sm-12 col-md-6 col-lg-4">
+            <div class="card-service h-100">
+              <h5><i class="bi bi-person-lines-fill me-2"></i>{{ msg.name }}</h5>
+              <p><strong>Email:</strong> {{ msg.email }}</p>
+              <p><strong>Number:</strong> {{ msg.number }}</p>
+              <p><strong>Message:</strong><br>{{ msg.message }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p>No contact messages yet.</p>
+      {% endif %}
+    {% else %}
+      {% if user_services %}
+        <div class="row g-4">
+          {% for key, item in user_services.items() %}
+          <div class="col-sm-12 col-md-6 col-lg-4">
+            <div class="card-service h-100">
+              <h5><i class="bi bi-gear-fill me-2"></i>{{ item.service }}</h5>
+              <p><strong>Plan:</strong> {{ item.plan }}</p>
+              <p><strong>Price:</strong> ₹{{ item.price }}</p>
+              <p><strong>PAN:</strong> {{ item.user_pan or 'N/A' }}</p>
+
+              <p>Status:
+                <span class="status-badge
+                  {% if item.status == 'in progress' %}status-inprogress
+                  {% elif item.status == 'completed' %}status-completed
+                  {% endif %}">
+                  {{ item.status|capitalize }}
+                </span>
+              </p>
+
+              <p>Admin:
+                <span class="status-badge
+                  {% if item.admin_status == 'accepted' %}status-accepted
+                  {% elif item.admin_status == 'rejected' %}status-rejected
+                  {% elif item.status == 'completed' %}status-accepted
+                  {% else %}status-inprogress{% endif %}">
+                  {{ item.admin_status|capitalize }}
+                </span>
+              </p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p>You have not submitted any services yet.</p>
+      {% endif %}
+    {% endif %}
+  </div>
+</main>
+
+<footer id="footer">
+  <div class="container">
+    <div class="row d-flex align-items-center">
+      <div class="col-lg-6 text-lg-left text-center">
+        <div class="copyright">
+          &copy; Copyright <strong>MAAV SOLUTIONS</strong>. All Rights Reserved
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <nav class="footer-links text-lg-right text-center pt-2 pt-lg-0">
+          <a href="/">Home</a>
+          <a href="/#about">About us</a>
+          <a href="/#services">Our Services</a>
+          <a href="#">Privacy Policy</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Scripts -->
+<script src="static/vendor/aos/aos.js"></script>
+<script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="static/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="static/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="{{ url_for('static', filename='main.js') }}" defer></script>
+
+</body>
+</html>

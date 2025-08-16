@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>MAAV SOLUTIONS - GST</title>
+  <link href="static/img/favicon.png" rel="icon">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Raleway|Poppins" rel="stylesheet">
+  <link href="static/vendor/aos/aos.css" rel="stylesheet">
+  <link href="static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="static/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="static/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="static/vendor/remixicon/remixicon.css" rel="stylesheet">
+  <link href="static/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style2.css') }}">
+
+  <style>
+    .hidden { display: none; }
+    .card {
+      margin-bottom: 20px;
+      border: 1px solid #eaeaea;
+      border-radius: 10px;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
+    .card h5 { font-weight: bold; margin-bottom: 10px; color: #005aa7; }
+    .note { font-size: 0.9rem; color: #b30000; font-weight: bold; }
+    .form-label { font-weight: 500; }
+
+    @media (max-width: 576px) {
+      .logo h1 {
+        font-size: 1rem;
+      }
+      .btn-sm {
+        font-size: 0.75rem;
+        padding: 0.3rem 0.5rem;
+      }
+      .dropdown-menu {
+        font-size: 0.9rem;
+      }
+      #header {
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top d-flex align-items-center">
+  <div class="container-fluid d-flex align-items-center justify-content-between px-3 flex-wrap">
+    <div class="logo">
+      <h1><a href="/">MAAV SOLUTIONS</a></h1>
+    </div>
+
+    <nav id="navbar" class="navbar">
+      <ul>
+        <li><a class="nav-link scrollto" href="/">Home</a></li>
+        <li><a class="nav-link scrollto" href="/#services">Services</a></li>
+        <li><a class="nav-link scrollto" href="/#about">About us</a></li>
+        <li><a class="nav-link scrollto" href="/#mission">Our Mission</a></li>
+        <li><a class="nav-link scrollto" href="/#vision">Our Vision</a></li>
+        <li><a class="nav-link scrollto" href="/#contact">Contact us</a></li>
+      </ul>
+      <i class="bi bi-list mobile-nav-toggle"></i>
+    </nav>
+
+    <div class="d-flex align-items-center mt-2 mt-sm-0">
+      {% if user %}
+        {% if role != 'admin' %}
+          <a href="{{ url_for('dashboard') }}" class="btn btn-outline-success btn-sm me-2">Dashboard</a>
+          <a href="{{ url_for('cart') }}" class="btn btn-outline-primary btn-sm me-2">My Cart</a>
+        {% endif %}
+        <div class="dropdown me-2">
+          <button class="btn btn-outline-dark rounded-circle dropdown-toggle px-3 py-1" type="button" data-bs-toggle="dropdown">
+            <i class="bi bi-person-circle"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li class="dropdown-header">Hello {{ name }}</li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item text-danger" href="/logout">Logout</a></li>
+          </ul>
+        </div>
+      {% else %}
+        <a href="/login" class="btn btn-outline-primary btn-sm me-2">Login</a>
+        <a href="/signup" class="btn btn-primary btn-sm me-3">Signup</a>
+      {% endif %}
+    </div>
+  </div>
+</header>
+
+<!-- ======= Main Section ======= -->
+<main class="pt-5 mt-5" style="min-height: 100vh; padding-bottom: 100px;">
+  <div class="container pb-5">
+    <div class="section-title">
+      <h2>Goods and Services Tax (GST)</h2>
+      <p>Select your GST service type and fill in the required details.</p>
+    </div>
+
+    <form action="/submit_service/gst" method="POST">
+      <div class="mb-4">
+        <label for="gst_type" class="form-label">Select GST Service:</label>
+        <select id="gst_type" name="gst_type" class="form-control" required onchange="showGSTForm()">
+          <option value="">-- Choose GST Type --</option>
+          <option value="gst_registration">GST Registration</option>
+          <option value="monthly_filing">Monthly Filing (GSTR-1, 3B, 5)</option>
+          <option value="gstr9">GSTR-9</option>
+        </select>
+      </div>
+
+      {% set gst_services = [
+        {'key': 'gst_registration', 'title': 'GST REGISTRATION', 'desc': 'Under GST, businesses whose turnover exceeds the threshold of ₹40L / ₹20L / ₹10L (based on region) must register as a normal taxable person.'},
+        {'key': 'monthly_filing', 'title': 'Monthly Filing (GSTR-1, GSTR-3B, GSTR-5)', 'desc': 'Includes monthly/quarterly filing of GSTR-1, GSTR-3B, and GSTR-5 for eligible businesses.'},
+        {'key': 'gstr9', 'title': 'GSTR-9', 'desc': 'Annual return to be filed by regular taxpayers including SEZ units/developers, covering all GST transactions in the FY.'}
+      ] %}
+
+      {% for svc in gst_services %}
+<div id="form_{{ svc.key }}" class="hidden card">
+  <h5>{{ svc.title }}</h5>
+  <p>{{ svc.desc }}</p>
+  <p class="note">NOTE: Penalty is levied if not paid within due date.</p>
+
+  <div class="mb-3">
+    <label class="form-label">Select Plan</label>
+    <select name="plan_{{ svc.key }}" class="form-control" required>
+
+      {% if svc.key == 'gst_registration' %}
+        <option value="Sole Proprietorship/Individual">Sole Proprietorship/Individual – ₹799</option>
+        <option value="Partnership/LLP">Partnership/LLP – ₹1,999</option>
+        <option value="Private Limited Company">Private Limited Company – ₹2,999</option>
+        <option value="E-commerce Seller/Other">E-commerce Seller/Other – ₹2,499</option>
+
+      {% elif svc.key == 'monthly_filing' %}
+        <option value="Sole Proprietors/Small Retailers(GSTR1, 3B)">Sole Proprietors/Small Retailers (GSTR1, 3B) – ₹1,999/month</option>
+        <option value="Partnerships/LLPs">Partnerships/LLPs – ₹4,999/month</option>
+        <option value="Private Limited Companies">Private Limited Companies – ₹4,999/month</option>
+        <option value="E-commerce Sellers (GSTR1, 3B)">E-commerce Sellers (GSTR1, 3B) – ₹4,999/month</option>
+        <option value="Nil-Transaction Clients">Nil-Transaction Clients – ₹1,999/month</option>
+        <option value="Non-Residents & Foreign Entities">Non-Residents & Foreign Entities (GSTR-5) – ₹9,999/month</option>
+
+      {% elif svc.key == 'gstr9' %}
+        <option value="Sole Proprietors/Small Retailers">Sole Proprietors/Small Retailers – ₹1,999</option>
+        <option value="Partnerships/LLPs">Partnerships/LLPs – ₹4,999</option>
+        <option value="Private Limited Companies">Private Limited Companies – ₹4,999</option>
+        <option value="E-commerce Sellers">E-commerce Sellers – ₹4,999</option>
+        <option value="Nil-Transaction Clients">Nil-Transaction Clients – ₹1,999</option>
+        <option value="Non-Residents & Foreign Entities">Non-Residents & Foreign Entities – ₹9,999</option>
+      {% endif %}
+
+    </select>
+  </div>
+
+  <div class="mb-3"><label class="form-label">Name as per PAN</label>
+    <input type="text" class="form-control" name="name_{{ svc.key }}" required>
+  </div>
+  <div class="mb-3"><label class="form-label">Mobile Number</label>
+    <input type="tel" class="form-control" name="phone_{{ svc.key }}" pattern="[0-9]{10}" required>
+  </div>
+  <div class="mb-3"><label class="form-label">Email ID</label>
+    <input type="email" class="form-control" name="email_{{ svc.key }}" required>
+  </div>
+  <div class="mb-3"><label class="form-label">PAN</label>
+    <input type="text" class="form-control" name="pan_{{ svc.key }}" required>
+  </div>
+</div>
+{% endfor %}
+
+
+      <div class="text-center mt-4">
+        <button type="submit" class="btn btn-success px-5">Submit</button>
+      </div>
+    </form>
+  </div>
+</main>
+
+<!-- ======= Footer ======= -->
+<footer id="footer1">
+  <div class="container">
+    <div class="row d-flex align-items-center">
+      <div class="col-lg-6 text-lg-left text-center">
+        <div class="copyright1">
+          &copy; Copyright <strong>MAAV SOLUTIONS</strong>. All Rights Reserved
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <nav class="footer-links text-lg-right text-center pt-2 pt-lg-0">
+          <a href="/">Home</a>
+          <a href="#about">About us</a>
+          <a href="#services">Services</a>
+          <a href="#">Privacy Policy</a>
+        </nav>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+function showGSTForm() {
+  const selected = document.getElementById('gst_type').value;
+  const allTypes = ['gst_registration', 'monthly_filing', 'gstr9'];
+  allTypes.forEach(type => {
+    const section = document.getElementById('form_' + type);
+    if (section) {
+      if (type === selected) {
+        section.classList.remove('hidden');
+        [...section.querySelectorAll('[name]')].forEach(field => field.setAttribute('required', 'required'));
+      } else {
+        section.classList.add('hidden');
+        [...section.querySelectorAll('[name]')].forEach(field => field.removeAttribute('required'));
+      }
+    }
+  });
+}
+</script>
+
+<script src="static/vendor/aos/aos.js"></script>
+<script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="static/vendor/glightbox/js/glightbox.min.js"></script>
+<script src="static/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="{{ url_for('static', filename='main.js') }}" defer></script>
+</body>
+</html>
