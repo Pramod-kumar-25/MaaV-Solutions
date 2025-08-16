@@ -1,34 +1,36 @@
-from dotenv import load_dotenv
-load_dotenv()
-from flask import Flask, render_template, request, redirect, url_for, session,jsonify
-from flask_mail import Mail, Message
-from firebase import auth, db
-import os
-import razorpay
+fimport os
 
-
-app = Flask(__name__)
-app.secret_key = os.getenv("FLASK_SECRET_KEY", "default_secret_key")
-
-
-# Mail configuration
-
-
-# Razorpay keys (you should store these in environment variables for production)
-RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID")
-RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET")
-
-
-
-razorpay_client = None
 try:
-    if RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET:
-        razorpay_client = razorpay.Client(auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET))
-    else:
-        print("⚠️ Razorpay keys missing. Payments will not work.")
-except Exception as e:
-    print("❌ Error initializing Razorpay:", e)
+    from dotenv import load_dotenv
+    load_dotenv()
 
+    from flask import Flask, render_template, request, redirect, url_for, session, jsonify
+    from flask_mail import Mail, Message
+    from firebase import auth, db
+    import razorpay
+
+    app = Flask(__name__)
+    app.secret_key = os.getenv("FLASK_SECRET_KEY", "default_secret_key")
+
+    # Razorpay init
+    RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID")
+    RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET")
+
+    razorpay_client = None
+    try:
+        if RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET:
+            razorpay_client = razorpay.Client(auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET))
+            print("✅ Razorpay initialized")
+        else:
+            print("⚠️ Razorpay keys missing. Payments disabled.")
+    except Exception as e:
+        print("❌ Razorpay init error:", e)
+        razorpay_client = None
+
+except Exception as e:
+    # 🔴 This will finally print the crash reason in Vercel logs
+    print("❌ App startup error:", e)
+    raise
 
 @app.route('/create_order', methods=['POST'])
 def create_order():
