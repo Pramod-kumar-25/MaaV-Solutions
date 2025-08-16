@@ -20,7 +20,15 @@ RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET")
 
 
 
-razorpay_client = razorpay.Client(auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET))
+razorpay_client = None
+try:
+    if RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET:
+        razorpay_client = razorpay.Client(auth=(RAZORPAY_KEY_ID, RAZORPAY_KEY_SECRET))
+    else:
+        print("⚠️ Razorpay keys missing. Payments will not work.")
+except Exception as e:
+    print("❌ Error initializing Razorpay:", e)
+
 
 @app.route('/create_order', methods=['POST'])
 def create_order():
